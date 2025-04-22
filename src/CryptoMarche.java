@@ -24,11 +24,15 @@ public class CryptoMarche {
      * @param proprietare
      * @return capital en euros du propriétare.
      */
-    public double capitalEnEuros(String proprietaire){
+    public double capitalEnEuros(String proprietaire)
+    {
         double total = 0;
-        for (Portefeuille p : this.portefeuilles) {
-            if (p.getProprietaire().equals(proprietaire)) {
-                total += p.getJetons() * p.getCryptomonnaie().getValeurEuro();
+        for (Portefeuille p : portefeuilles)
+        {
+            if (p.getProprietaire().equals(proprietaire)) 
+            {
+                double valeurUnitaire = p.getMonnaie().getValeurDeJeton();
+                total += p.getNombreJetons() * valeurUnitaire;
             }
         }
         return total;
@@ -42,11 +46,14 @@ public class CryptoMarche {
      * @param monnaie
      * @return capital total en circulation de la cryptomonnaie (en euros).
      */
-    public double capitalMonneaie(Cryptomonnaie monnaie){
+    public double capitalMonneaie(Cryptomonnaie monnaie)
+    {
         double total = 0;
-        for (Portefeuille p : this.portefeuilles) {
-            if (p.getCryptomonnaie().getNom().equals(monnaie.getNom())) {
-                total += p.getJetons() * monnaie.getValeurEuro();
+        for (Portefeuille p : portefeuilles)
+        {
+            if (p.getMonnaie().getNom().equals(monnaie.getNom())) 
+            {
+            total += p.getNombreJetons() * monnaie.getValeurDeJeton();
             }
         }
         return total;
