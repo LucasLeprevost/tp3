@@ -10,54 +10,32 @@ public class CryptoMarche {
     }
 
     public static CryptoMarche getInstance(){
-        if(marche == null){ marche = new CryptoMarche();}
-		return marche;
+        if(marche == null){ marche = new CryptoMarche(); }
+        return marche;
     }
 
     public void ajouter(Portefeuille p){
         portefeuilles.add(p);
     }
 
-    /**
-     * Cette fonction recherche sur le marché tous les portefeuilles 
-     * du propriétaire et calcule son capital en euros. 
-     * @param proprietare
-     * @return capital en euros du propriétare.
-     */
-    public double capitalEnEuros(String proprietaire)
-    {
+    public double capitalEnEuros(String proprietaire){
         double total = 0;
-        for (Portefeuille p : portefeuilles)
-        {
-            if (p.getProprietaire().equals(proprietaire)) 
-            {
-                double valeurUnitaire = p.getMonnaie().getValeurDeJeton();
-                total += p.getNombreJetons() * valeurUnitaire;
+        for (Portefeuille p : portefeuilles) {
+            if (p.estProprietaire(proprietaire)) {
+                total += p.valeurEnEuros();
             }
         }
         return total;
-    
     }
 
-    /**
-     * Cette fonction recherche sur le marché tous les portefeuilles 
-     * d'un type de devise et calcule le volume total de capital de 
-     * cette devise sur le marché 
-     * @param monnaie
-     * @return capital total en circulation de la cryptomonnaie (en euros).
-     */
-    public double capitalMonneaie(Cryptomonnaie monnaie)
-    {
+    public double capitalMonneaie(Cryptomonnaie monnaie){
         double total = 0;
-        for (Portefeuille p : portefeuilles)
-        {
-            if (p.getMonnaie().getNom().equals(monnaie.getNom())) 
-            {
-            total += p.getNombreJetons() * monnaie.getValeurDeJeton();
+        for (Portefeuille p : portefeuilles) {
+            if (p.getMonnaie().getNom().equals(monnaie.getNom())) {
+                total += p.valeurEnEuros();
             }
         }
         return total;
-
     }
 
     @Override
@@ -68,5 +46,4 @@ public class CryptoMarche {
         }
         return ret;
     }
-
 }
