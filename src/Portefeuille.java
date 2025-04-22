@@ -1,12 +1,39 @@
 public class Portefeuille {
-    private String proprietaire;
     private Cryptomonnaie monnaie;
-    private double nombreJetons;
+    private double montant; // Soit le nombre de jetons
+    private String proprietaire;
 
-    public Portefeuille(String proprietaire, Cryptomonnaie monnaie, double nombreJetons) {
+    public Portefeuille(Cryptomonnaie monnaie, double montant, String proprietaire){
+        this.monnaie      = monnaie;
+        this.montant      = montant;
         this.proprietaire = proprietaire;
-        this.monnaie = monnaie;
-        this.nombreJetons = nombreJetons;
+    }
+
+    public boolean transfertDevise(Portefeuille destination, double montantJetons){
+        // Même type de monnaie et montant suffisant
+        if (this.monnaie.getNom().equals(destination.getMonnaie().getNom()) && this.montant >= montantJetons) {
+            this.montant -= montantJetons;
+            destination.montant += montantJetons;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean achatDevise(double montantEuros){
+        if (montantEuros >= 0) {
+            double jetonsAchetes = montantEuros / this.monnaie.getValeurDeJeton();
+            this.montant += jetonsAchetes;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean estProprietaire(String proprietaire){
+        return proprietaire.equals(this.proprietaire);
+    }
+
+    public double valeurEnEuros(){
+        return this.montant * this.monnaie.getValeurDeJeton();
     }
 
     public String getProprietaire() {
@@ -17,37 +44,15 @@ public class Portefeuille {
         return monnaie;
     }
 
-    public double getNombreJetons() {
-        return nombreJetons;
+    public double getMontant() {
+        return montant;
     }
 
-    /**
-     * Transfère des jetons vers un autre portefeuille.
-     */
-    public boolean transfertDevise(Portefeuille destination, double montantJetons) {
-        // Vérifie même type de monnaie et montant suffisant
-        if (montantJetons < 0
-            || !this.monnaie.getNom().equals(destination.getMonnaie().getNom())
-            || this.nombreJetons < montantJetons) {
-            return false;
-        }
-        // Retire du portefeuille courant
-        this.nombreJetons -= montantJetons;
-        // Ajoute dans le portefeuille de destination
-        destination.nombreJetons += montantJetons;
-        return true;
-    }
-
-    /**
-     * Achète des jetons en fonction d'un montant en euros.
-     */
-    public boolean achatDevise(double montantEuros) {
-        if (montantEuros < 0) {
-            return false;
-        }
-        // Convertit euros → jetons
-        double jetonsAchat = montantEuros / monnaie.getValeurDeJeton();
-        this.nombreJetons += jetonsAchat;
-        return true;
+    @Override
+    public String toString() {
+        return String.format("%10s", proprietaire) + " : "
+             + String.format("%10.1f", montant)   + " x " 
+             + this.monnaie.toString()            + " = "
+             + String.format("%10.1f", valeurEnEuros());
     }
 }
