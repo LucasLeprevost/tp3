@@ -1,3 +1,9 @@
+**---
+layout: default
+title: "Projet TP3 – Pages GitHub"
+---**
+
+
 # 🌐 Projet TP3 – Pages GitHub
 
 Bienvenue sur mon site Web pour le **TP3** du cours _Introduction à Git et GitHub_.
